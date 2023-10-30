@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Elizabeth Son">
-<meta name="dcterms.date" content="2023-10-11">
+<meta name="dcterms.date" content="2023-10-29">
 
 <title>Progress Memo 1</title>
 <style>
@@ -3022,7 +3022,7 @@ Data Science 1 with R (STAT 301-1)</p><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 11, 2023</p>
+      <p class="date">October 29, 2023</p>
     </div>
   </div>
   
@@ -3045,47 +3045,45 @@ Github Repo Link
 <p><a href="https://github.com/stat301-1-2023-fall/final-project-1-elizabethson">https://github.com/stat301-1-2023-fall/final-project-1-elizabethson</a></p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>GitHub (free account) cannot store large files. If you try to commit and push a large dataset you will have an ERROR! Any file over 100 MB (100,000 KB) needs to be added to the <code>.gitignore</code> file BEFORE committing.</p>
-<p><strong>We may need to do that for files in your final project!</strong></p>
-</div>
-</div>
 <section id="data-source" class="level2">
 <h2 class="anchored" data-anchor-id="data-source">Data source</h2>
-<p>Blah blah blah<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>“GDP Over Hours Worked”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is the dataset behind an article titled “All work and no play”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> from The Economist. There is a single dataset as a CSV file. The aim of the article was to measure productivity based on metrics such as PPP (Purchasing Power Parity) and hours worked. Some key variables are year (ranging from 1980 to 2022), country, unemployment rate, hours (working) per employed (person), and functions of GDP (Gross Domestic Product).</p>
+<p>The next 5 datasets<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> come from “The World Happiness Report”<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> which details happiness level by country calculated from Gallup World Poll data, which utilized surveys based on the Cantril ladder<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. The Cantril ladder asks respondents to rate their “own current lives” on a scale of 0 to 10 to determine an average “Happiness Score” by country. In addition to Happiness Score, there are six more relevant variables such as “healthy life expectancy.” Each dataset corresponds to a year from 2015 to 2019.</p>
+<p>To join these datasets together, I will use the country variables from each of the datasets to create one large, combined dataset. Since the Happiness Score datasets are divided by year, I will make a new variable named “Year” in each dataset to combine them with the corresponding observations from <code>gdp_hours_worked</code>.</p>
 </section>
 <section id="why-this-data" class="level2">
 <h2 class="anchored" data-anchor-id="why-this-data">Why this data</h2>
-<p>Blah blah blah<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>As an economics major, the focus of many of my classes have been quantitative, such as GDP and unemployment. What hasn’t been addressed enough, however, is whether maximized productivity in the form of economic growth or power can also impact citizens’ well-being. The ideal nation shouldn’t just be wealthy and powerful, but also have happy citizens who can then contribute to society in more positive ways. Some preliminary questions that I have are:</p>
+<ol type="1">
+<li><p>Is there a correlation between Happiness Score and productivity? How about with hours worked?</p></li>
+<li><p>Is there a “Laffer Curve”-like<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> relationship between Happiness Score and hours worked? (I expect that minimal hours worked does not necessarily equate to maximum happiness.)</p></li>
+</ol>
 </section>
 <section id="data-quality-complexity-check" class="level2">
 <h2 class="anchored" data-anchor-id="data-quality-complexity-check">Data quality &amp; complexity check</h2>
-<p>Blah blah blah</p>
+<p><code>gdp_hours_worked</code> has 11560 observations and 27 variables. 3 variables are categorical and 24 are numerical. Some of the numerical variables have missing values.</p>
+<p><code>happy 2015</code>, <code>happy_2016</code>, <code>happy_2017</code>, <code>happy_2018</code>, <code>happy_2019</code> have 158, 157, 155, 156, and 156 observations respectively. Each dataset also has 12, 13, 12, 9, and 9 variables respectively. <code>happy_2015</code> and <code>happy_2016</code> have two categorical variables, while <code>happy_2017</code>, <code>happy_2018</code>, and <code>happy_2019</code> have one categorical variable. The remaining variables are numerical. There are no missing values in any of the Happiness Report datasets.</p>
 </section>
 <section id="potential-data-issues" class="level2">
 <h2 class="anchored" data-anchor-id="potential-data-issues">Potential data issues</h2>
-<p>Blah blah blah</p>
+<p>Merging the datasets into one will be challenging because each observation in <code>gdp_hours_worked</code> represents a different year, while the Happiness Report datasets will have year as a variable.</p>
+<p><code>gdp_hours_worked</code> is also a messy dataset because many values are missing. I will also have to look into finding documentation for the variables, because it is unclear what some of the variables are measuring (such as “iso2c”).</p>
 </section>
 <section id="misc" class="level2">
 <h2 class="anchored" data-anchor-id="misc">Misc</h2>
-<p>Blah Blah</p>
+<p>My data exploration will not only include visualizations by country, but also over time. Since the Happiness Report datasets only contain 5 years of data, the data over time combining all of the datasets will be restricted to that time period.</p>
 </section>
 
 
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>where blah blah came from, an example of footnote<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>another footnote<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>https://www.kaggle.com/datasets/unsdsn/world-happiness<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>https://worldhappiness.report<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>https://worldhappiness.report/about/<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>https://www.heritage.org/taxes/report/the-laffer-curve-past-present-and-future<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
