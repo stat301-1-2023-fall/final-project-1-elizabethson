@@ -1,0 +1,132 @@
+---
+title: "Progress Memo 2"
+subtitle: |
+  | Final Project 
+  | Data Science 1 with R (STAT 301-1)
+author: "Elizabeth Son"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    
+execute:
+  echo: false
+  warning: false
+
+from: markdown+emoji 
+---
+
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+[https://github.com/stat301-1-2023-fall/final-project-1-elizabethson](https://github.com/stat301-1-2023-fall/final-project-1-elizabethson)
+
+:::
+## Joining Datasets
+```{r}
+library(readr)
+library(tidyverse)
+library(janitor)
+library(rlang)
+
+# read in data
+gdp_hours_worked <- read_csv("data/raw/gdp_over_hours_worked.csv")
+happy_2015 <- read_csv("data/raw/2015.csv")
+happy_2016 <- read_csv("data/raw/2016.csv")
+happy_2017 <- read_csv("data/raw/2017.csv")
+happy_2018 <- read_csv("data/raw/2018.csv")
+happy_2019 <- read_csv("data/raw/2019.csv")
+
+# make my function 
+add_year <- function(data, year){
+  data |> 
+    mutate(year = {{year}}) |> 
+    clean_names()
+}
+
+# add years
+happy_2015_yr <- add_year(happy_2015, 2015)
+happy_2016_yr <- add_year(happy_2016, 2016)
+happy_2017_yr <- add_year(happy_2016, 2017)
+happy_2018_yr <- add_year(happy_2016, 2018)
+happy_2019_yr <- add_year(happy_2016, 2019)
+
+# join data sets
+joined_happiness <- bind_rows (happy_2015_yr, happy_2016_yr, happy_2017_yr, happy_2018_yr, happy_2019_yr)
+
+# check that the primary key(s) uniquely identifies each observation
+gdp_hours_worked |>
+  count(country, year) |>
+  filter(n > 1)
+# check for missing values in primary key(s)
+gdp_hours_worked |>
+  filter(is.na(country) | is.na(year))
+
+# edit gdp_hours_worked
+
+gdp_hours_worked_renamed <- gdp_hours_worked |>
+  mutate(country = ifelse(country == "Venezuela, RB", "Venezuela", country)) |> 
+  mutate(country = ifelse(country == "Czechia", "Czech Republic", country)) |> 
+  mutate(country = ifelse(country == "Slovak Republic", "Slovakia", country)) |> 
+  mutate(country = ifelse(country == "Egypt, Arab Rep.", "Egypt", country)) |> 
+  mutate(country = ifelse(country == "Yemen, Rep.", "Yemen", country)) |> 
+  mutate(country = ifelse(country == "Iran, Islamic Rep.", "Iran", country)) |> 
+  mutate(country = ifelse(country == "Lao PDR", "Laos", country)) |> 
+  mutate(country = ifelse(country == "Syrian Arab Republic", "Syria", country)) |> 
+  mutate(country = ifelse(country == "Turkiye", "Turkey", country)) |> 
+  mutate(country = ifelse(country == "North Macedonia", "Macedonia", country)) |> 
+  mutate(country = ifelse(country == "Cote d'Ivoire", "Ivory Coast", country)) |> 
+  mutate(country = ifelse(country == "Kyrgyz Republic", "Kyrgyzstan", country)) |> 
+  mutate(country = ifelse(country == "Hong Kong SAR, China", "Hong Kong", country))
+
+
+
+
+gdp_happiness <- gdp_hours_worked_renamed |> 
+  full_join(joined_happiness, by = c("year", "country")) |> 
+  filter(!is.na(happiness_rank))
+# check that this join is good
+# save
+```
+
+
+## Example
+read function using read_csv
+save as rds after data cleaning to preserve data types
+
+to hide a tibble using kable: 
+```{r}
+#| echo: false
+library(tidyverse)
+tibble <- tibble(name = c("Var1"), value = c(1))
+tibble |> 
+  knitr::kable()
+```
+you should not have skim() or summary()
+intead, use summarize() to show as a nice table
+
+Here is a [dataset](https://www.google.com)
+
+## graph 1:
+Major changes in a nation's environment can stem from events such as a natural disaster, a pandemic, civic turmoil, or war. Thus, to check if any of the countries had a major change in a specific year that would affect my data analysis, I checked for outliers in any of the numeric variables within each country. This identified any areas of concern that may arise as I go through my data exploration process, but I remain cautious about completely removing these observations from my dataset as I expect that variables such as `unemployment_r` and `happiness_score` would adjust correspondingly if any one variable drastically changed. 
+
+check for outliers --> sudden change in any of the metrics --> average var per country + sd --> filter/return if value is more than 3 sd from the mean --> graph the outlying ones 
+
+## graph 2:
+There is a __ correlation between...
+corplot between variables
+
+## graph 3: 
+I explored the high correlation between __ and __ by ...
+happiness score v hour worked geom_hist or geom_bar
+
+## Conclusion
+So far, (summary go here --> self assessment and what I have found so far)
+
+### Next Steps
+( guiding curiosities or research questions they plan to explore.)
+## References
+Kaggle (2023). College Basketball Dataset, [google.com](google.com)

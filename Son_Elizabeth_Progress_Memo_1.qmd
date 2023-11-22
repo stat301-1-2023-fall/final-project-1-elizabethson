@@ -47,12 +47,12 @@ As an economics major, the focus of many of my classes have been quantitative, s
 ```{r}
 library(readr)
 library(tidyverse)
-gdp_hours_worked <- read_csv("data/gdp_over_hours_worked.csv")
-happy_2015 <- read_csv("data/2015.csv")
-happy_2016 <- read_csv("data/2016.csv")
-happy_2017 <- read_csv("data/2017.csv")
-happy_2018 <- read_csv("data/2018.csv")
-happy_2019 <- read_csv("data/2019.csv")
+gdp_hours_worked <- read_csv("data/raw/gdp_over_hours_worked.csv")
+happy_2015 <- read_csv("data/raw/2015.csv")
+happy_2016 <- read_csv("data/raw/2016.csv")
+happy_2017 <- read_csv("data/raw/2017.csv")
+happy_2018 <- read_csv("data/raw/2018.csv")
+happy_2019 <- read_csv("data/raw/2019.csv")
 ```
 `gdp_hours_worked` has 11560 observations and 27 variables. 3 variables are categorical and 24 are numerical. Some of the numerical variables have missing values. 
 

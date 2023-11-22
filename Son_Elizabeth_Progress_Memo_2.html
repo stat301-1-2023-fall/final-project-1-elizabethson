@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Elizabeth Son">
-<meta name="dcterms.date" content="2023-11-14">
+<meta name="dcterms.date" content="2023-11-15">
 
-<title>Progress Memo 1</title>
+<title>Progress Memo 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -2991,11 +2991,15 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#data-source" id="toc-data-source" class="nav-link active" data-scroll-target="#data-source">Data source</a></li>
-  <li><a href="#why-this-data" id="toc-why-this-data" class="nav-link" data-scroll-target="#why-this-data">Why this data</a></li>
-  <li><a href="#data-quality-complexity-check" id="toc-data-quality-complexity-check" class="nav-link" data-scroll-target="#data-quality-complexity-check">Data quality &amp; complexity check</a></li>
-  <li><a href="#potential-data-issues" id="toc-potential-data-issues" class="nav-link" data-scroll-target="#potential-data-issues">Potential data issues</a></li>
-  <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc">Misc</a></li>
+  <li><a href="#joining-datasets" id="toc-joining-datasets" class="nav-link active" data-scroll-target="#joining-datasets">Joining Datasets</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#graph-1" id="toc-graph-1" class="nav-link" data-scroll-target="#graph-1">graph 1:</a></li>
+  <li><a href="#graph-2" id="toc-graph-2" class="nav-link" data-scroll-target="#graph-2">graph 2:</a></li>
+  <li><a href="#graph-3" id="toc-graph-3" class="nav-link" data-scroll-target="#graph-3">graph 3:</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a>
+  <ul class="collapse">
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -3003,7 +3007,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Progress Memo 1</h1>
+<h1 class="title">Progress Memo 2</h1>
 <p class="subtitle lead"></p><p>Final Project<br>
 Data Science 1 with R (STAT 301-1)</p><p></p>
 </div>
@@ -3022,7 +3026,7 @@ Data Science 1 with R (STAT 301-1)</p><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 14, 2023</p>
+      <p class="date">November 15, 2023</p>
     </div>
   </div>
   
@@ -3045,47 +3049,85 @@ Github Repo Link
 <p><a href="https://github.com/stat301-1-2023-fall/final-project-1-elizabethson">https://github.com/stat301-1-2023-fall/final-project-1-elizabethson</a></p>
 </div>
 </div>
-<section id="data-source" class="level2">
-<h2 class="anchored" data-anchor-id="data-source">Data source</h2>
-<p>“GDP Over Hours Worked”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is the dataset behind an article titled “All work and no play”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> from The Economist. There is a single dataset as a CSV file. The aim of the article was to measure productivity based on metrics such as PPP (Purchasing Power Parity) and hours worked. Some key variables are year (ranging from 1980 to 2022), country, unemployment rate, hours (working) per employed (person), and functions of GDP (Gross Domestic Product).</p>
-<p>The next 5 datasets<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> come from “The World Happiness Report”<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> which details happiness level by country calculated from Gallup World Poll data, which utilized surveys based on the Cantril ladder<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. The Cantril ladder asks respondents to rate their “own current lives” on a scale of 0 to 10 to determine an average “Happiness Score” by country. In addition to Happiness Score, there are six more relevant variables such as “healthy life expectancy.” Each dataset corresponds to a year from 2015 to 2019.</p>
-<p>To join these datasets together, I will use the country variables from each of the datasets to create one large, combined dataset. Since the Happiness Score datasets are divided by year, I will make a new variable named “Year” in each dataset to combine them with the corresponding observations from <code>gdp_hours_worked</code>.</p>
+<section id="joining-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="joining-datasets">Joining Datasets</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 43 × 3
+   country  year     n
+   &lt;chr&gt;   &lt;dbl&gt; &lt;int&gt;
+ 1 Namibia  1980     2
+ 2 Namibia  1981     2
+ 3 Namibia  1982     2
+ 4 Namibia  1983     2
+ 5 Namibia  1984     2
+ 6 Namibia  1985     2
+ 7 Namibia  1986     2
+ 8 Namibia  1987     2
+ 9 Namibia  1988     2
+10 Namibia  1989     2
+# ℹ 33 more rows</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 27
+# ℹ 27 variables: iso2c &lt;chr&gt;, year &lt;dbl&gt;, country &lt;chr&gt;, iso3c &lt;chr&gt;,
+#   pop &lt;dbl&gt;, labor_force &lt;dbl&gt;, gdp_ppp_c &lt;dbl&gt;, gdp_ppp &lt;dbl&gt;, gdp &lt;dbl&gt;,
+#   gdp_c &lt;dbl&gt;, unemployment_r &lt;dbl&gt;, pop_over_65 &lt;dbl&gt;,
+#   working_age_pop_pct &lt;dbl&gt;, employment_rate &lt;dbl&gt;, hours_worked &lt;dbl&gt;,
+#   total_hours &lt;dbl&gt;, hours_per_employed &lt;dbl&gt;, employed &lt;dbl&gt;,
+#   total_hours_alternative &lt;dbl&gt;, gdp_over_k_hours_worked &lt;dbl&gt;,
+#   gdp_ppp_over_k_hours_worked &lt;dbl&gt;, gdp_over_pop &lt;dbl&gt;, …</code></pre>
+</div>
+</div>
 </section>
-<section id="why-this-data" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-data">Why this data</h2>
-<p>As an economics major, the focus of many of my classes have been quantitative, such as GDP and unemployment. What hasn’t been addressed enough, however, is whether maximized productivity in the form of economic growth or power can also impact citizens’ well-being. The ideal nation shouldn’t just be wealthy and powerful, but also have happy citizens who can then contribute to society in more positive ways. Some preliminary questions that I have are:</p>
-<ol type="1">
-<li><p>Is there a correlation between Happiness Score and productivity? How about with hours worked?</p></li>
-<li><p>Is there a “Laffer Curve”-like<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> relationship between Happiness Score and hours worked? (I expect that minimal hours worked does not necessarily equate to maximum happiness.)</p></li>
-</ol>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
+<p>read function using read_csv save as rds after data cleaning to preserve data types</p>
+<p>to hide a tibble using kable:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Var1</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>you should not have skim() or summary() intead, use summarize() to show as a nice table</p>
+<p>Here is a <a href="https://www.google.com">dataset</a></p>
 </section>
-<section id="data-quality-complexity-check" class="level2">
-<h2 class="anchored" data-anchor-id="data-quality-complexity-check">Data quality &amp; complexity check</h2>
-<p><code>gdp_hours_worked</code> has 11560 observations and 27 variables. 3 variables are categorical and 24 are numerical. Some of the numerical variables have missing values.</p>
-<p><code>happy 2015</code>, <code>happy_2016</code>, <code>happy_2017</code>, <code>happy_2018</code>, <code>happy_2019</code> have 158, 157, 155, 156, and 156 observations respectively. Each dataset also has 12, 13, 12, 9, and 9 variables respectively. <code>happy_2015</code> and <code>happy_2016</code> have two categorical variables, while <code>happy_2017</code>, <code>happy_2018</code>, and <code>happy_2019</code> have one categorical variable. The remaining variables are numerical. There are no missing values in any of the Happiness Report datasets.</p>
+<section id="graph-1" class="level2">
+<h2 class="anchored" data-anchor-id="graph-1">graph 1:</h2>
+<p>Major changes in a nation’s environment can stem from events such as a natural disaster, a pandemic, civic turmoil, or war. Thus, to check if any of the countries had a major change in a specific year that would affect my data analysis, I checked for outliers in any of the numeric variables within each country. This identified any areas of concern that may arise as I go through my data exploration process, but I remain cautious about completely removing these observations from my dataset as I expect that variables such as <code>unemployment_r</code> and <code>happiness_score</code> would adjust correspondingly if any one variable drastically changed.</p>
+<p>check for outliers –&gt; sudden change in any of the metrics –&gt; average var per country + sd –&gt; filter/return if value is more than 3 sd from the mean –&gt; graph the outlying ones</p>
 </section>
-<section id="potential-data-issues" class="level2">
-<h2 class="anchored" data-anchor-id="potential-data-issues">Potential data issues</h2>
-<p>Merging the datasets into one will be challenging because each observation in <code>gdp_hours_worked</code> represents a different year, while the Happiness Report datasets will have year as a variable.</p>
-<p><code>gdp_hours_worked</code> is also a messy dataset because many values are missing. I will also have to look into finding documentation for the variables, because it is unclear what some of the variables are measuring (such as “iso2c”).</p>
+<section id="graph-2" class="level2">
+<h2 class="anchored" data-anchor-id="graph-2">graph 2:</h2>
+<p>There is a __ correlation between… corplot between variables</p>
 </section>
-<section id="misc" class="level2">
-<h2 class="anchored" data-anchor-id="misc">Misc</h2>
-<p>My data exploration will not only include visualizations by country, but also over time. Since the Happiness Report datasets only contain 5 years of data, the data over time combining all of the datasets will be restricted to that time period.</p>
+<section id="graph-3" class="level2">
+<h2 class="anchored" data-anchor-id="graph-3">graph 3:</h2>
+<p>I explored the high correlation between __ and __ by … happiness score v hour worked geom_hist or geom_bar</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>So far, (summary go here –&gt; self assessment and what I have found so far)</p>
+<section id="next-steps" class="level3">
+<h3 class="anchored" data-anchor-id="next-steps">Next Steps</h3>
+<p>( guiding curiosities or research questions they plan to explore.) ## References Kaggle (2023). College Basketball Dataset, <a href="google.com">google.com</a></p>
+</section>
 </section>
 
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>https://www.kaggle.com/datasets/unsdsn/world-happiness<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>https://worldhappiness.report<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>https://worldhappiness.report/about/<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>https://www.heritage.org/taxes/report/the-laffer-curve-past-present-and-future<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main>
+</main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
