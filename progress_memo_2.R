@@ -3,6 +3,8 @@ library(tidyverse)
 library(janitor)
 library(rlang)
 
+## Data Cleaning:
+
 # read in data
 gdp_hours_worked <- read_csv("data/raw/gdp_over_hours_worked.csv")
 happy_2015 <- read_csv("data/raw/2015.csv")
@@ -32,6 +34,7 @@ joined_happiness <- bind_rows (happy_2015_yr, happy_2016_yr, happy_2017_yr, happ
 gdp_hours_worked |>
   count(country, year) |>
   filter(n > 1)
+
 # check for missing values in primary key(s)
 gdp_hours_worked |>
   filter(is.na(country) | is.na(year))
@@ -51,13 +54,62 @@ gdp_hours_worked_renamed <- gdp_hours_worked |>
   mutate(country = ifelse(country == "North Macedonia", "Macedonia", country)) |> 
   mutate(country = ifelse(country == "Cote d'Ivoire", "Ivory Coast", country)) |> 
   mutate(country = ifelse(country == "Kyrgyz Republic", "Kyrgyzstan", country)) |> 
-  mutate(country = ifelse(country == "Hong Kong SAR, China", "Hong Kong", country))
+  mutate(country = ifelse(country == "Hong Kong SAR, China", "Hong Kong", country)) |> 
+  mutate(country = ifelse(country == "Russian Federation", "Russia", country)) |> 
+  mutate(country = ifelse(country == "Korea, Rep.", "South Korea", country)) |> 
+  mutate(country = ifelse(country == "Somaliland region", "Somalia", country))
 
+# change region to factors
+gdp_happiness <- gdp_happiness |> 
+  mutate(region = factor(region))
 
-
-
+# join
 gdp_happiness <- gdp_hours_worked_renamed |> 
   full_join(joined_happiness, by = c("year", "country")) |> 
   filter(!is.na(happiness_rank))
-# check that this join is good
+
 # save
+write_rds(gdp_happiness, "data/gdp_happiness.rds")
+
+# read
+gdp_happiness <- read_rds("data/gdp_happiness.rds")
+
+## fig 1:
+corr <- gdp_happiness |> 
+  select(pop:gdp_ppp_over_k_hours_worked_c, happiness_score) |> 
+  cor(use = "complete.obs")
+ggcorrplot::ggcorrplot(corr)
+
+## fig 2-4:
+gdp_happiness |> 
+  ggplot(aes(x = gdp_ppp_over_labor_force, y = happiness_score)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(title="Happiness Score vs. GDP per Person Over Labor Force", 
+       x="GDP per Person Over Labor Force", y= "Happiness Score")
+
+gdp_happiness |> 
+  ggplot(aes(x = employment_rate, y = happiness_score)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(title="Happiness Score vs. Employment Rate", 
+       x="Employment Rate", y= "Happiness Score")
+
+gdp_happiness |> 
+  ggplot(aes(x = hours_per_employed, y = happiness_score)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(title="Happiness Score vs. Hours Worked per Employed Person", 
+       x="Hours Worked per Employed Person", y= "Happiness Score")
+
+## fig 5:
+gdp_happiness |> 
+  ggplot(aes(region)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+## fig 6:
+gdp_happiness |> 
+  ggplot(aes(x = hours_per_employed, y = happiness_score)) +
+  geom_jitter(color = "tomato3") +
+  facet_wrap(vars(region))
