@@ -113,3 +113,4 @@ gdp_happiness |>
   ggplot(aes(x = hours_per_employed, y = happiness_score)) +
   geom_jitter(color = "tomato3") +
   facet_wrap(vars(region))
+
