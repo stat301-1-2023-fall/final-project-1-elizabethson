@@ -9,7 +9,7 @@
 <meta name="author" content="Elizabeth Son">
 <meta name="dcterms.date" content="2023-11-30">
 
-<title>Progress Memo 1</title>
+<title>Happiness: A Sacrifice for Productivity?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -2991,11 +2991,17 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#data-source" id="toc-data-source" class="nav-link active" data-scroll-target="#data-source">Data source</a></li>
-  <li><a href="#why-this-data" id="toc-why-this-data" class="nav-link" data-scroll-target="#why-this-data">Why this data</a></li>
-  <li><a href="#data-quality-complexity-check" id="toc-data-quality-complexity-check" class="nav-link" data-scroll-target="#data-quality-complexity-check">Data quality &amp; complexity check</a></li>
-  <li><a href="#potential-data-issues" id="toc-potential-data-issues" class="nav-link" data-scroll-target="#potential-data-issues">Potential data issues</a></li>
-  <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc">Misc</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-overview" id="toc-data-overview" class="nav-link" data-scroll-target="#data-overview">Data Overview</a>
+  <ul class="collapse">
+  <li><a href="#gdp-over-hours-worked-dataset" id="toc-gdp-over-hours-worked-dataset" class="nav-link" data-scroll-target="#gdp-over-hours-worked-dataset">1 GDP Over Hours Worked Dataset</a></li>
+  <li><a href="#happiness-report-datasets" id="toc-happiness-report-datasets" class="nav-link" data-scroll-target="#happiness-report-datasets">5 Happiness Report Datasets</a></li>
+  </ul></li>
+  <li><a href="#explorations" id="toc-explorations" class="nav-link" data-scroll-target="#explorations">Explorations</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#appendix-technical-information" id="toc-appendix-technical-information" class="nav-link" data-scroll-target="#appendix-technical-information">Appendix: Technical Information</a></li>
+  <li><a href="#appendix-extra-explorations" id="toc-appendix-extra-explorations" class="nav-link" data-scroll-target="#appendix-extra-explorations">Appendix: Extra Explorations</a></li>
   </ul>
 </nav>
 </div>
@@ -3003,7 +3009,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Progress Memo 1</h1>
+<h1 class="title">Happiness: A Sacrifice for Productivity?</h1>
 <p class="subtitle lead"></p><p>Final Project<br>
 Data Science 1 with R (STAT 301-1)</p><p></p>
 </div>
@@ -3045,33 +3051,59 @@ Github Repo Link
 <p><a href="https://github.com/stat301-1-2023-fall/final-project-1-elizabethson">https://github.com/stat301-1-2023-fall/final-project-1-elizabethson</a></p>
 </div>
 </div>
-<section id="data-source" class="level2">
-<h2 class="anchored" data-anchor-id="data-source">Data source</h2>
-<p>“GDP Over Hours Worked”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is the dataset behind an article titled “All work and no play”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> from The Economist. There is a single dataset as a CSV file. The aim of the article was to measure productivity based on metrics such as PPP (Purchasing Power Parity) and hours worked. Some key variables are year (ranging from 1980 to 2022), country, unemployment rate, hours (working) per employed (person), and functions of GDP (Gross Domestic Product).</p>
-<p>The next 5 datasets<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> come from “The World Happiness Report”<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> which details happiness level by country calculated from Gallup World Poll data, which utilized surveys based on the Cantril ladder<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. The Cantril ladder asks respondents to rate their “own current lives” on a scale of 0 to 10 to determine an average “Happiness Score” by country. In addition to Happiness Score, there are six more relevant variables such as “healthy life expectancy.” Each dataset corresponds to a year from 2015 to 2019.</p>
-<p>To join these datasets together, I will use the country variables from each of the datasets to create one large, combined dataset. Since the Happiness Score datasets are divided by year, I will make a new variable named “Year” in each dataset to combine them with the corresponding observations from <code>gdp_hours_worked</code>.</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>As an economics major, the focus of many of my classes have been quantitative, such as GDP and unemployment. What hasn’t been addressed enough, however, is whether maximized productivity in the form of economic growth or power can also impact citizens’ well-being. The ideal nation shouldn’t just be wealthy and powerful, but also have happy citizens who can then contribute to society in more positive ways.</p>
+<p>The research question that initially motivated this project was: Is there a correlation between happiness and productivity?</p>
+<p>This report grew from this question, expanding to… TYPE HERE</p>
+<p>The data sources that were used to carry out this exploration comes from “GDP Over Hours Worked”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, the dataset behind an article titled “All work and no play”<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> from The Economist. The datasets on happiness measures come from “The World Happiness Report”<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> for the years from 2015 to 2019.</p>
+<p>My data exploration not only includes analyses by country, but also over time. Since the Happiness Report datasets only contain 5 years of data, the data over time combining all of the datasets will be restricted to the years 2015 to 2019.</p>
 </section>
-<section id="why-this-data" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-data">Why this data</h2>
-<p>As an economics major, the focus of many of my classes have been quantitative, such as GDP and unemployment. What hasn’t been addressed enough, however, is whether maximized productivity in the form of economic growth or power can also impact citizens’ well-being. The ideal nation shouldn’t just be wealthy and powerful, but also have happy citizens who can then contribute to society in more positive ways. Some preliminary questions that I have are:</p>
-<ol type="1">
-<li><p>Is there a correlation between Happiness Score and productivity? How about with hours worked?</p></li>
-<li><p>Is there a “Laffer Curve”-like<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> relationship between Happiness Score and hours worked? (I expect that minimal hours worked does not necessarily equate to maximum happiness.)</p></li>
-</ol>
+<section id="data-overview" class="level2">
+<h2 class="anchored" data-anchor-id="data-overview">Data Overview</h2>
+<p>The data used in this exploration comes from 6 different datasets:</p>
+<section id="gdp-over-hours-worked-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="gdp-over-hours-worked-dataset">1 GDP Over Hours Worked Dataset</h3>
+<section id="description" class="level4">
+<h4 class="anchored" data-anchor-id="description">Description:</h4>
+<p>The “GDP Over Hours Worked” dataset contains variables and variable transformations according to the original author’s intent to measure productivity based on metrics such as PPP (Purchasing Power Parity) and hours worked. Each observation corresponds to a different year (from 1980 to 2022) and country.</p>
 </section>
-<section id="data-quality-complexity-check" class="level2">
-<h2 class="anchored" data-anchor-id="data-quality-complexity-check">Data quality &amp; complexity check</h2>
-<p><code>gdp_hours_worked</code> has 11560 observations and 27 variables. 3 variables are categorical and 24 are numerical. Some of the numerical variables have missing values.</p>
-<p><code>happy 2015</code>, <code>happy_2016</code>, <code>happy_2017</code>, <code>happy_2018</code>, <code>happy_2019</code> have 158, 157, 155, 156, and 156 observations respectively. Each dataset also has 12, 13, 12, 9, and 9 variables respectively. <code>happy_2015</code> and <code>happy_2016</code> have two categorical variables, while <code>happy_2017</code>, <code>happy_2018</code>, and <code>happy_2019</code> have one categorical variable. The remaining variables are numerical. There are no missing values in any of the Happiness Report datasets.</p>
+<section id="features" class="level4">
+<h4 class="anchored" data-anchor-id="features">Features:</h4>
+<p>“GDP Over Hours Worked” is a 2.7 MB dataset with 11560 observations and 27 variables: 3 categorical and 24 numerical. Some of the numerical variables have missing values.</p>
 </section>
-<section id="potential-data-issues" class="level2">
-<h2 class="anchored" data-anchor-id="potential-data-issues">Potential data issues</h2>
+</section>
+<section id="happiness-report-datasets" class="level3">
+<h3 class="anchored" data-anchor-id="happiness-report-datasets">5 Happiness Report Datasets</h3>
+<section id="description-1" class="level4">
+<h4 class="anchored" data-anchor-id="description-1">Description:</h4>
+<p>Each “Happiness Report” dataset details happiness level by country calculated from Gallup World Poll data, which utilized surveys based on the Cantril ladder<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. The Cantril ladder asks respondents to rate their “own current lives” on a scale of 0 to 10 to determine an average “Happiness Score” by country. In addition to Happiness Score, there are six other relevant variables such as “healthy life expectancy”.</p>
+</section>
+<section id="features-1" class="level4">
+<h4 class="anchored" data-anchor-id="features-1">Features:</h4>
+<p>“Happiness Report” datasets contain information on the years 2015, 2016, 2017, 2018, and 2019. Each dataset contains 158, 157, 155, 156, and 156 observations as well as 12, 13, 12, 9, and 9 variables respectively. The datasets from 2015 and 2016 have two categorical variables, while the datasets from 2017, 2018, and 2019 have one categorical variable. The remaining variables are numerical. There are no missing values in any of the “Happiness Report” datasets.</p>
+</section>
+</section>
+</section>
+<section id="explorations" class="level2">
+<h2 class="anchored" data-anchor-id="explorations">Explorations</h2>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>The Economist (2023). All work and no play, <a href="https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america">https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america</a></p>
+<p>The Economist (2023). GDP Over Hours Worked, <a href="https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv">https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv</a></p>
+<p>Kaggle (2019). World Happiness Report, <a href="https://www.kaggle.com/datasets/unsdsn/world-happiness">https://www.kaggle.com/datasets/unsdsn/world-happiness</a></p>
+</section>
+<section id="appendix-technical-information" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-technical-information">Appendix: Technical Information</h2>
 <p>Merging the datasets into one will be challenging because each observation in <code>gdp_hours_worked</code> represents a different year, while the Happiness Report datasets will have year as a variable.</p>
-<p><code>gdp_hours_worked</code> is also a messy dataset because many values are missing. I will also have to look into finding documentation for the variables, because it is unclear what some of the variables are measuring (such as “iso2c”).</p>
+<p>I joined several datasets together by adding a variable called <code>year</code> to each happiness data set using a function. Using the primary keys <code>country</code> and <code>year</code>, I combined the GDP and happiness datasets into one dataset called <code>gdp_happiness</code>. Some countries changed names over time, so I manually updated some <code>country</code> names using the mutate function. Finally, I changed <code>region</code> to a factor for further data explorations.</p>
 </section>
-<section id="misc" class="level2">
-<h2 class="anchored" data-anchor-id="misc">Misc</h2>
-<p>My data exploration will not only include visualizations by country, but also over time. Since the Happiness Report datasets only contain 5 years of data, the data over time combining all of the datasets will be restricted to that time period.</p>
+<section id="appendix-extra-explorations" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-extra-explorations">Appendix: Extra Explorations</h2>
 </section>
 
 
@@ -3081,9 +3113,7 @@ Github Repo Link
 <li id="fn1"><p>https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>https://www.kaggle.com/datasets/unsdsn/world-happiness<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>https://worldhappiness.report<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>https://worldhappiness.report/about/<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>https://www.heritage.org/taxes/report/the-laffer-curve-past-present-and-future<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>https://worldhappiness.report/about/<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->

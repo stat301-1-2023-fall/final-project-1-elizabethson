@@ -1,0 +1,79 @@
+---
+title: "Happiness: A Sacrifice for Productivity?"
+subtitle: |
+  | Final Project 
+  | Data Science 1 with R (STAT 301-1)
+author: "Elizabeth Son"
+date: today
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    
+execute:
+  echo: false
+  warning: false
+
+from: markdown+emoji 
+---
+```{r}
+#| echo: false
+#| label: load-pkgs-data
+library(tidyverse)
+gdp_happiness <- read_rds("data/gdp_happiness.rds")
+```
+
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+[https://github.com/stat301-1-2023-fall/final-project-1-elizabethson](https://github.com/stat301-1-2023-fall/final-project-1-elizabethson)
+
+:::
+
+## Introduction
+As an economics major, the focus of many of my classes have been quantitative, such as GDP and unemployment. What hasn't been addressed enough, however, is whether maximized productivity in the form of economic growth or power can also impact citizens' well-being. The ideal nation shouldn't just be wealthy and powerful, but also have happy citizens who can then contribute to society in more positive ways.
+
+The research question that initially motivated this project was: Is there a correlation between happiness and productivity?
+
+This report grew from this question, expanding to... TYPE HERE
+
+The data sources that were used to carry out this exploration comes from "GDP Over Hours Worked"^[https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv], the dataset behind an article titled "All work and no play"^[https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america] from The Economist. The datasets on happiness measures come from “The World Happiness Report”^[https://www.kaggle.com/datasets/unsdsn/world-happiness] for the years from 2015 to 2019. 
+
+My data exploration not only includes analyses by country, but also over time. Since the Happiness Report datasets only contain 5 years of data, the data over time combining all of the datasets will be restricted to the years 2015 to 2019. 
+
+## Data Overview
+The data used in this exploration comes from 6 different datasets:
+
+### 1 GDP Over Hours Worked Dataset
+#### Description:
+The "GDP Over Hours Worked" dataset contains variables and variable transformations according to the original author's intent to measure productivity based on metrics such as PPP (Purchasing Power Parity) and hours worked. Each observation corresponds to a different year (from 1980 to 2022) and country.
+
+#### Features: 
+"GDP Over Hours Worked" is a 2.7 MB dataset with 11560 observations and 27 variables: 3 categorical and 24 numerical. Some of the numerical variables have missing values. 
+
+### 5 Happiness Report Datasets
+#### Description: 
+Each "Happiness Report" dataset details happiness level by country calculated from Gallup World Poll data, which utilized surveys based on the Cantril ladder^[https://worldhappiness.report/about/]. The Cantril ladder asks respondents to rate their "own current lives" on a scale of 0 to 10 to determine an average "Happiness Score" by country. In addition to Happiness Score, there are six other relevant variables such as "healthy life expectancy".
+
+#### Features: 
+"Happiness Report" datasets contain information on the years 2015, 2016, 2017, 2018, and 2019. Each dataset contains 158, 157, 155, 156, and 156 observations as well as 12, 13, 12, 9, and 9 variables respectively. The datasets from 2015 and 2016 have two categorical variables, while the datasets from 2017, 2018, and 2019 have one categorical variable. The remaining variables are numerical. There are no missing values in any of the "Happiness Report" datasets. 
+
+## Explorations
+
+## Conclusion
+
+## References
+The Economist (2023). All work and no play, [https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america](https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america)
+
+The Economist (2023). GDP Over Hours Worked, [https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv](https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv)
+
+Kaggle (2019). World Happiness Report, [https://www.kaggle.com/datasets/unsdsn/world-happiness](https://www.kaggle.com/datasets/unsdsn/world-happiness)
+
+## Appendix: Technical Information
+Merging the datasets into one will be challenging because each observation in `gdp_hours_worked` represents a different year, while the Happiness Report datasets will have year as a variable. 
+
+I joined several datasets together by adding a variable called `year` to each happiness data set using a function. Using the primary keys `country` and `year`, I combined the GDP and happiness datasets into one dataset called `gdp_happiness`. Some countries changed names over time, so I manually updated some `country` names using the mutate function. Finally, I changed `region` to a factor for further data explorations. 
+
+## Appendix: Extra Explorations
