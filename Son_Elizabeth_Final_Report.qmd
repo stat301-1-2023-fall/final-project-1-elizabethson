@@ -20,7 +20,12 @@ from: markdown+emoji
 ```{r}
 #| echo: false
 #| label: load-pkgs-data
+
+#libraries
 library(tidyverse)
+library(dplyr)
+
+#data
 gdp_happiness <- read_rds("data/gdp_happiness.rds")
 ```
 
@@ -40,6 +45,8 @@ The research question that initially motivated this project was: Is there a corr
 This report grew from this question, expanding to... TYPE HERE
 
 The data sources that were used to carry out this exploration comes from "GDP Over Hours Worked"^[https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv], the dataset behind an article titled "All work and no play"^[https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america] from The Economist. The datasets on happiness measures come from “The World Happiness Report”^[https://www.kaggle.com/datasets/unsdsn/world-happiness] for the years from 2015 to 2019. 
+
+A key distinction is the definition of productivity. The definition mostly used throughout this report draws on the one provided by the Bureau of Labor Statistics: productivity is a measure of economic performance that compares the amount of goods and services produced (output) with the amount of inputs used to produce those goods and services. For this project, the input is labor force size and the output is GDP, scaled by purchasing power parity (PPP).
 
 My data exploration not only includes analyses by country, but also over time. Since the Happiness Report datasets only contain 5 years of data, the data over time combining all of the datasets will be restricted to the years 2015 to 2019. 
 
@@ -61,11 +68,19 @@ Each "Happiness Report" dataset details happiness level by country calculated fr
 "Happiness Report" datasets contain information on the years 2015, 2016, 2017, 2018, and 2019. Each dataset contains 158, 157, 155, 156, and 156 observations as well as 12, 13, 12, 9, and 9 variables respectively. The datasets from 2015 and 2016 have two categorical variables, while the datasets from 2017, 2018, and 2019 have one categorical variable. The remaining variables are numerical. There are no missing values in any of the "Happiness Report" datasets. 
 
 ## Explorations
-### Happiness v. Productivity
+### 1. Happiness v. Productivity
+Corrplot explanation...
+```{r}
+corr <- gdp_happiness |> 
+  select(pop:employment_rate, employed, gdp_over_pop:gdp_over_pop_c, happiness_score) |> 
+  cor(use = "complete.obs")
+ggcorrplot::ggcorrplot(corr)
+```
 
-### Other "Happiness" Metrics
 
-### Time Trends
+### 2. Other "Happiness" Metrics
+
+### 3. Time Trends
 
 ## Conclusion
 
@@ -76,9 +91,40 @@ The Economist (2023). GDP Over Hours Worked, [https://github.com/TheEconomist/th
 
 Kaggle (2019). World Happiness Report, [https://www.kaggle.com/datasets/unsdsn/world-happiness](https://www.kaggle.com/datasets/unsdsn/world-happiness)
 
+U.S. Bureau of Labor Statistics. Productivity 101, [https://www.bls.gov/k12/productivity-101/content/what-is-productivity/home.htm](https://www.bls.gov/k12/productivity-101/content/what-is-productivity/home.htm)
+
 ## Appendix: Technical Information
 Merging the datasets into one will be challenging because each observation in `gdp_hours_worked` represents a different year, while the Happiness Report datasets will have year as a variable. 
 
+### Data Cleaning: Country Names
 I joined several datasets together by adding a variable called `year` to each happiness data set using a function. Using the primary keys `country` and `year`, I combined the GDP and happiness datasets into one dataset called `gdp_happiness`. Some countries changed names over time, so I manually updated some `country` names using the mutate function. Finally, I changed `region` to a factor for further data explorations. 
+
+### Missing Data: Measuring Productivity
+Aside from the formal definition of productivity, the decision to measure productivity by GDP PPP divided by labor force instead of GDP PPP divided by hours worked was driven by missingness in the "GDP Over Hours Worked" dataset.
+
+First, I wanted to see which variables had a high number of missing observations, `NA`. 
+
+```{r}
+gdp_happiness |> 
+  summarise(across(everything(), ~ sum(is.na(.)))) |> 
+  pivot_longer(everything(), names_to = "variable", values_to = "na_count") |> 
+  slice_max(na_count, n = 15) |> 
+  knitr::kable()
+```
+
+Many of the variables with a high count of NA observations involved hours worked. So, I examined these variables further. 
+
+```{r}
+gdp_happiness |> 
+  mutate(missing_hours_worked = is.na(hours_worked),
+         missing_total_hours = is.na(total_hours),
+         missing_hours_per_employed = is.na(hours_per_employed),
+         missing_gdp_ppp_over_k_hours_worked = is.na(gdp_ppp_over_k_hours_worked),
+         missing_gdp_ppp_over_k_hours_worked_c = is.na(gdp_ppp_over_k_hours_worked_c)) |> 
+  count(missing_hours_worked, missing_total_hours, missing_hours_per_employed, missing_gdp_ppp_over_k_hours_worked, missing_gdp_ppp_over_k_hours_worked_c) |> 
+  knitr::kable()
+```
+
+I expected a return of every iteration of TRUE/FALSE. However, the majority of combinations were TRUE for variables regarding hours. Thus, missingness many observations was largely in part due to an hour variable used to calculate other, relevant variables being missing. 
 
 ## Appendix: Extra Explorations
