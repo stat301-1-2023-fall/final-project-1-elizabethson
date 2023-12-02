@@ -61,6 +61,11 @@ Each "Happiness Report" dataset details happiness level by country calculated fr
 "Happiness Report" datasets contain information on the years 2015, 2016, 2017, 2018, and 2019. Each dataset contains 158, 157, 155, 156, and 156 observations as well as 12, 13, 12, 9, and 9 variables respectively. The datasets from 2015 and 2016 have two categorical variables, while the datasets from 2017, 2018, and 2019 have one categorical variable. The remaining variables are numerical. There are no missing values in any of the "Happiness Report" datasets. 
 
 ## Explorations
+### Happiness v. Productivity
+
+### Other "Happiness" Metrics
+
+### Time Trends
 
 ## Conclusion
 
