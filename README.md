@@ -5,12 +5,12 @@ This repository is for an analysis of data on happiness and GDP variables for co
 Describe project and general structure of repo ...
 
 ## What is in the repo:
-- `/data`
-  - `gdp_happiness.rds`
-  - `/raw`
+- `/data`: joined dataset and raw data
+  - `gdp_happiness.rds`: joined dataset of raw data
+  - `/raw`: raw data
 
 ### R Scripts:
-- `0a_data_cleaning.R`: 
+- `0a_data_cleaning.R`:
 - `0b_driving_explorations.R`
 - `1_happiness_v_productivityg.R`
 - `2_happiness_v_unemployment.R`
@@ -18,9 +18,9 @@ Describe project and general structure of repo ...
 - `4_time_trends.R`
 
 ### Progress Memos:
-- `Son_Elizabeth_Progress_Memo_1.qmd`
-- `Son_Elizabeth_Progress_Memo_2.qmd`
+- `Son_Elizabeth_Progress_Memo_1.qmd`: Progress Memo 1 with initial project guideline, data quality and complexity check, and potential data issues
+- `Son_Elizabeth_Progress_Memo_2.qmd`: Progress Memo 2 with initial data cleaning and joining, correlation plot, exploratory graphs, initial conclusions, and next steps
 
 ### Final Files:
-- `Son_Elizabeth_Final_Report.qmd`
-- `Son_Elizabeth_Executive_Summary.qmd`
+- `Son_Elizabeth_Final_Report.qmd`: Final Report with project description, approach, and all conclusions
+- `Son_Elizabeth_Executive_Summary.qmd`: Executive Summary with project description, approach, and key conclusions
