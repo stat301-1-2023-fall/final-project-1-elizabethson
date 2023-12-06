@@ -230,12 +230,113 @@ gdp_happiness |>
 
 Surprisingly, the negative correlation between happiness and unemployment rate across all regions did not hold up after faceting by region. For example, for countries in the region Sub-Saharan Africa, the relationship between happiness and unemployment rate was actually positive: as unemployment increases, happiness also increases. In contrast, countries in regions such as Southern Asia and the Middle East and Northern Africa show a strong, negative relationship between happiness and unemployment rate. For countries in regions such as Latin America and Caribbean, the relationship between happiness and unemployment rate is very weak. 
 
-The scatterplots faceted by region provide greater insight into 
+The scatterplots faceted by region provide greater insight into how region can impact the relationship between happiness and unemployment rate in significant ways.
 
 ### Multivariate Analysis: Happiness, Productivity, and Unemployment Rate 
+Past analyses emphasize that regional differences can drive different relationships between variables of interest, such as productivity and unemployment rate, and happiness. @fig-5 visualized how the relationship between happiness and productivity was stronger for some regions than others, despite being positive for nearly every region. @fig-8 visualized how the relationship between happiness and unemployment rate was negative for some regions, and positive for others. 
+
+@fig-9 provides a multivariate analysis between happiness, productivity, and unemployment rate, faceted by region. 
+
+```{r}
+#| echo: false
+#| label: fig-9
+#| fig.cap: Scatter plot of productivity v. unemployment rate, faceted by region and including happiness score
+
+gdp_happiness |> 
+  ggplot(aes(x = unemployment_r, y = gdp_ppp_over_labor_force, color = happiness_score)) +
+  geom_jitter() +
+  theme_minimal() +
+  facet_wrap(vars(region)) +
+  geom_smooth(method = lm, se = FALSE, color = "gray") +
+  labs(title="Productivity v. Unemployment Rate", 
+       x="Unemployment Rate", y= "GDP PPP / Labor Force",
+       color = "Happiness Score",
+       subtitle = "by Region and including Happiness Score")
+```
+
+As expected, the relationship between unemployment rate and productivity varies by region. The relationship is negative in the Middle East and Northern Africa, but positive in Southeastern Asia.
+
+However, there are some notable trends in the interaction between unemployment rate, productivity, and happiness by region. Further analysis is done on two regions: Eastern Asia and Western Europe. 
+
+> Eastern Asia: The tradeoff between productivity and unemployment rate is significant. As unemployment rises even marginally, there is a strong negative relationship between productivity and unemployment rate that leads to a significant drop in productivity. Happiness, however, does not experience a similarly dramatic drop. Countries in Eastern Asia have a smaller range in happiness that is skewed toward lower levels of happiness. Thus, the drop in happiness is insignificant in the context of a happiness scale from 0 to 10. 
+
+> Western Europe: Countries in Western Europe also experience a negative relationship between productivity and unempoyment rate. However, this negative relationship is not as strong- as unemployment rate increases, productivity decreases marginally. Countries in Western Europe also have a wide range of happiness, with the happiest countries having the lowest unemployment rates with varying levels of productivity. 
+
+While the multivariate analysis does not completely visualize the three-variable relationship while factoring for region, it does complement past analyses by showing that a significant relationship does exist in some regions. 
 
 ### Time Trends
+To further analyze the relationship between productivity and happiness, and how they interact over time, @fig-10 reveals the top 10 countries in terms of happiness score and productivity. 
 
+```{r}
+#| echo: false
+#| label: fig-10
+#| fig.cap: Table of the happiest and most productive countries in 2019
+
+happy_and_productive_countries <- gdp_happiness |> 
+  filter(year == 2019) |> 
+  filter(happiness_rank < 40) |> 
+  slice_max(gdp_ppp_over_labor_force, n = 5) |> 
+  mutate(rank = row_number()) |>
+  select(rank, everything())
+
+happy_and_productive_countries|> 
+  knitr::kable()
+```
+
+There are many ways to determine the "most" happy and productive country. The approach I used here was to filter the dataset by the top 40 happiest countries in 2019. @fig-10 then ranks these countries by productivity. According to the table, Luxembourg is the happiest and most productive country, followed by Ireland and Singapore.
+
+@fig-11, @fig-12, and @fig-13 reveal that the top 3 countries all experienced rising productivity over time from 2015 to 2019. Further, they reveal that at lower levels of productivity, the top 3 countries had higher happiness scores. 
+
+```{r}
+#| echo: false
+#| label: fig-11
+#| fig.cap: Productivity v. happiness by time in Luxembourg
+
+gdp_happiness |> 
+  filter(country == "Luxembourg") |> 
+  ggplot(aes(x = year, y = gdp_ppp_over_labor_force, color = happiness_score)) +
+  geom_jitter() +
+  theme_minimal() +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(title= "Productivity over Time in Luxembourg", 
+       y = "GDP PPP / Labor Force", x = "Year", 
+       color = "Happiness Score",
+       subtitle = "including happiness score")
+```
+
+```{r}
+#| echo: false
+#| label: fig-12
+#| fig.cap: Productivity v. happiness by time in Ireland
+
+gdp_happiness |> 
+  filter(country == "Ireland") |> 
+  ggplot(aes(x = year, y = gdp_ppp_over_labor_force, color = happiness_score)) +
+  geom_jitter() +
+  theme_minimal() +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(title= "Productivity over Time in Ireland", 
+       y = "GDP PPP / Labor Force", x = "Year", 
+       color = "Happiness Score",
+       subtitle = "including happiness score")
+```
+
+```{r}
+#| echo: false
+#| label: fig-13
+#| fig.cap: Productivity v. happiness by time in Singapore
+
+gdp_happiness |> 
+  filter(country == "Singapore") |> 
+  ggplot(aes(x = year, y = gdp_ppp_over_labor_force, color = happiness_score)) +
+  geom_jitter() +
+  theme_minimal() +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(title= "Productivity over Time in Singapore", 
+       y = "GDP PPP / Labor Force", x = "Year", 
+       color = "Happiness Score",
+       subtitle = "including happiness score")
+```
 ## Conclusion
 
 ## References

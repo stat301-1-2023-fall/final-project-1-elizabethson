@@ -12,14 +12,15 @@ gdp_happiness |>
 
 # Unemployment Rate v. gdp_ppp_over_labor_force by region
 gdp_happiness |> 
-  ggplot(aes(x = gdp_ppp_over_labor_force, y = unemployment_r)) +
+  ggplot(aes(x = unemployment_r, y = gdp_ppp_over_labor_force, color = happiness_score)) +
   geom_jitter() +
   theme_minimal() +
   facet_wrap(vars(region)) +
-  geom_smooth(method = lm, se = FALSE) +
-  labs(title="Unemployment Rate v. Productivity", 
-       x="GDP PPP / Labor Force", y= "Unemployment Rate",
-       subtitle = "by Region")
+  geom_smooth(method = lm, se = FALSE, color = "gray") +
+  labs(title="Productivity v. Unemployment Rate", 
+       x="Unemployment Rate", y= "GDP PPP / Labor Force",
+       color = "Happiness Score",
+       subtitle = "by Region and including Happiness Score")
 
 # table: metrics by region 
 table_by_region <- gdp_happiness |>
@@ -32,8 +33,3 @@ table_by_region <- gdp_happiness |>
 
 table_by_region |> 
   knitr::kable()
-
-# 3-var plot by region
-gdp_happiness |> 
-  ggplot(aes(x = gdp_ppp_over_labor_force, y = unemployment_r, size = happiness_score)) +
-  geom_jitter()
