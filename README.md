@@ -2,9 +2,11 @@
 
 This repository is for an analysis of data on happiness and GDP variables for countries from the years 2015 to 2019.
 
-Describe project and general structure of repo ...
+The repository is broken into four sections: Data, R Scripts, Progress Memos, and Final Files. The `Data` section was created first to make analyses in the `R Scripts` and presented in the `Final Files`.
 
 ## What is in the repo:
+
+### Data:
 - `/data`: joined dataset and raw data
   - `gdp_happiness.rds`: joined dataset of raw data
   - `/raw`: raw data
