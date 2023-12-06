@@ -18,6 +18,18 @@ gdp_happiness |>
        x="GDP PPP / Labor Force", y= "Unemployment Rate",
        subtitle = "by Region")
 
+# table: metrics by region 
+table_by_region <- gdp_happiness |>
+  group_by(region) |>
+  summarise(
+    mean_gdp_ppp_over_labor_force = mean(gdp_ppp_over_labor_force, na.rm = TRUE),
+    mean_happiness = mean(happiness_score, na.rm = TRUE),
+    mean_unemployment_r = mean(unemployment_r, na.rm = TRUE)
+  )
+
+table_by_region |> 
+  knitr::kable()
+
 # 3-var plot by region
 gdp_happiness |> 
   ggplot(aes(x = gdp_ppp_over_labor_force, y = unemployment_r, size = happiness_score)) +
