@@ -12,12 +12,12 @@ The repository is broken into four sections: Data, R Scripts, Progress Memos, an
   - `/raw`: raw data
 
 ### R Scripts:
-- `0a_data_cleaning.R`:
-- `0b_driving_explorations.R`
-- `1_happiness_v_productivityg.R`
-- `2_happiness_v_unemployment.R`
-- `3_multivar_analysis.R`
-- `4_time_trends.R`
+- `0a_data_cleaning.R`: updated country names, joined datasets, added `year` variable, changed `region` to a factor. 
+- `0b_driving_explorations.R`: initial explorations used for `Son_Elizabeth_Progress_Memo_2.qmd`; also includes analysis on missingness in variables, explored further in `Son_Elizabeth_Final_Report.qmd` Appendix section
+- `1_happiness_v_productivity.R`: bivariate analyses on happiness and productivity, faceted by region
+- `2_happiness_v_unemployment.R`: bivariate analyses on happiness and unemployment, faceted by region
+- `3_multivar_analysis.R`: multivariate analyses on happiness, unemployment, and productivity, faceted by region 
+- `4_time_trends.R`: ranking of countries based on happpiness and productivity; happiness and productivity over time for the top 3 countries
 
 ### Progress Memos:
 - `Son_Elizabeth_Progress_Memo_1.qmd`: Progress Memo 1 with initial project guideline, data quality and complexity check, and potential data issues
