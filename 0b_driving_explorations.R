@@ -1,4 +1,5 @@
 library(tidyverse)
+# The following figures were used in Progress Memo 2: 
 
 ## fig 1:
 corr <- gdp_happiness |> 
@@ -40,3 +41,29 @@ gdp_happiness |>
   geom_jitter(color = "tomato3") +
   facet_wrap(vars(region))
 
+# The following was created for the Final Project
+
+## missingness in hours_worked
+# count NA values for each column
+library(dplyr)
+gdp_happiness |> 
+  summarise(across(everything(), ~ sum(is.na(.)))) |> 
+  pivot_longer(everything(), names_to = "variable", values_to = "na_count") |> 
+  slice_max(na_count, n = 15) |> 
+  knitr::kable()
+
+# why so many missing gdp_ppp_over_k_hours_worked_c
+gdp_happiness |> 
+  mutate(missing_hours_worked = is.na(hours_worked),
+         missing_total_hours = is.na(total_hours),
+         missing_hours_per_employed = is.na(hours_per_employed),
+         missing_gdp_ppp_over_k_hours_worked = is.na(gdp_ppp_over_k_hours_worked),
+         missing_gdp_ppp_over_k_hours_worked_c = is.na(gdp_ppp_over_k_hours_worked_c)) |> 
+  count(missing_hours_worked, missing_total_hours, missing_hours_per_employed, missing_gdp_ppp_over_k_hours_worked, missing_gdp_ppp_over_k_hours_worked_c) |> 
+  knitr::kable()
+
+## new corrplot with relevant variables
+corr <- gdp_happiness |> 
+  select(pop:employment_rate, employed, gdp_over_pop:gdp_over_pop_c, happiness_score) |> 
+  cor(use = "complete.obs")
+ggcorrplot::ggcorrplot(corr)

@@ -27,15 +27,6 @@ happy_2019_yr <- add_year(happy_2016, 2019)
 # join data sets
 joined_happiness <- bind_rows (happy_2015_yr, happy_2016_yr, happy_2017_yr, happy_2018_yr, happy_2019_yr)
 
-# check that the primary key(s) uniquely identifies each observation
-gdp_hours_worked |>
-  count(country, year) |>
-  filter(n > 1)
-
-# check for missing values in primary key(s)
-gdp_hours_worked |>
-  filter(is.na(country) | is.na(year))
-
 # edit gdp_hours_worked
 gdp_hours_worked_renamed <- gdp_hours_worked |>
   mutate(country = ifelse(country == "Venezuela, RB", "Venezuela", country)) |> 
@@ -54,6 +45,26 @@ gdp_hours_worked_renamed <- gdp_hours_worked |>
   mutate(country = ifelse(country == "Russian Federation", "Russia", country)) |> 
   mutate(country = ifelse(country == "Korea, Rep.", "South Korea", country)) |> 
   mutate(country = ifelse(country == "Somaliland region", "Somalia", country))
+
+# check that the primary key(s) uniquely identifies each observation
+gdp_hours_worked_renamed |>
+  count(country, year) |>
+  filter(n > 1) |> 
+  print(n = 50)
+
+# remove Namibia
+gdp_hours_worked_renamed <- gdp_hours_worked_renamed |> 
+  filter(country != "Namibia")
+
+# check again that the primary key(s) uniquely identifies each observation
+gdp_hours_worked_renamed |>
+  count(country, year) |>
+  filter(n > 1) |> 
+  print(n = 50)
+
+# check for missing values in primary key(s)
+gdp_hours_worked_renamed |>
+  filter(is.na(country) | is.na(year))
 
 # join
 gdp_happiness <- gdp_hours_worked_renamed |> 
