@@ -1,3 +1,6 @@
+library(tidyverse)
+gdp_happiness <- read_rds("data/gdp_happiness.rds")
+
 # happiness_score v. gdp_ppp_over_labor_force
 gdp_happiness |> 
   ggplot(aes(x = gdp_ppp_over_labor_force, y = happiness_score)) +
@@ -13,7 +16,7 @@ mean_happiness_by_region <- gdp_happiness |>
   summarise(mean_happiness = mean(happiness_score, na.rm = TRUE))
 
 mean_happiness_by_region |> 
-  ggplot(aes(x = region, y = mean_happiness)) +
+  ggplot(aes(x = region, y = mean_happiness, fill = region)) +
   geom_col() +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
@@ -26,7 +29,7 @@ mean_productivity_by_region <- gdp_happiness |>
   summarise(mean_gdp_ppp_over_labor_force = mean(gdp_ppp_over_labor_force, na.rm = TRUE))
 
 mean_productivity_by_region |> 
-  ggplot(aes(x = region, y = mean_gdp_ppp_over_labor_force)) +
+  ggplot(aes(x = region, y = mean_gdp_ppp_over_labor_force, fill = region)) +
   geom_col() +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +

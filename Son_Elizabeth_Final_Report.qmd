@@ -46,7 +46,7 @@ This report grew from this question, expanding to... TYPE HERE
 
 The data sources that were used to carry out this exploration comes from ["GDP Over Hours Worked"](https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv), the dataset behind an article titled ["All work and no play"]([https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america) from The Economist. The datasets on happiness measures come from [“The World Happiness Report”](https://www.kaggle.com/datasets/unsdsn/world-happiness) for the years from 2015 to 2019. 
 
-A key distinction is the definition of productivity. The definition mostly used throughout this report draws on the one provided by the Bureau of Labor Statistics: productivity is a measure of economic performance that compares the amount of goods and services produced (output) with the amount of inputs used to produce those goods and services. For this project, the input is labor force size and the output is GDP, scaled by purchasing power parity (PPP).
+A key distinction is the definition of productivity. The definition mostly used throughout this report draws on the one provided by the Bureau of Labor Statistics: productivity is a measure of economic performance that compares the amount of goods and services produced (output) with the amount of inputs used to produce those goods and services. For this project, the input is labor force size and the output is GDP, scaled by purchasing power parity (PPP): GDP PPP / Labor Force (`gdp_ppp_over_labor_force`).
 
 My data exploration not only includes analyses by country, but also over time. Since the Happiness Report datasets only contain 5 years of data, the data over time combining all of the datasets will be restricted to the years 2015 to 2019. 
 
@@ -68,7 +68,12 @@ Each "Happiness Report" dataset details happiness level by country calculated fr
 "Happiness Report" datasets contain information on the years 2015, 2016, 2017, 2018, and 2019. Each dataset contains 158, 157, 155, 156, and 156 observations as well as 12, 13, 12, 9, and 9 variables respectively. The datasets from 2015 and 2016 have two categorical variables, while the datasets from 2017, 2018, and 2019 have one categorical variable. The remaining variables are numerical. There are no missing values in any of the "Happiness Report" datasets. 
 
 ## Explorations
-Corrplot explanation...
+A correlation plot on GDP variables such as "GDP over population" (`gdp_over_pop_c`) and "employment rate" (`employment_rate`) as well as "Happiness Score" (`happiness_score`) provides insight into which relationships have high correlations with happiness.
+
+From @fig-1, a strong, positive correlation is seen between productivity, measured by "GDP PPP / Labor Force" (`gdp_ppp_over_labor_force`), and happiness. This means that as happiness increases in a country, productivity also increases.
+
+@fig-1 also shows a negative correlation between "unemployment rate" (`unemployment_r`) and happiness. This means that as happiness increases in a country, the unemployment rate decreases. 
+
 ```{r}
 #| echo: false
 #| label: fig-1
@@ -77,10 +82,84 @@ Corrplot explanation...
 corr <- gdp_happiness |> 
   select(pop:employment_rate, employed, gdp_over_pop:gdp_over_pop_c, happiness_score) |> 
   cor(use = "complete.obs")
-ggcorrplot::ggcorrplot(corr)
+ggcorrplot::ggcorrplot(corr) +
+  ggtitle("Correlation Plot: GDP Variables and Happiness Score")
 ```
 
+These two relationships are explored further in the following sections. 
+
 ### Happiness v. Productivity
+As expected from the correlation plot in @fig-1, there is a positive relationship between productivity and happiness. Nevertheless, the connection appears to exhibit a concave rather than a linear trend, indicating that as productivity rises, happiness increases, but not in direct proportion. For example, the same positive change in productivity yields a larger positive change in happiness for countries with lower productivity than those with high productivity. @fig-2 visualizes this concave relationship. 
+
+```{r}
+#| echo: false
+#| label: fig-2
+#| fig.cap: Scatter plot of productivity v. happiness
+
+gdp_happiness |> 
+  ggplot(aes(x = gdp_ppp_over_labor_force, y = happiness_score)) +
+  geom_jitter() +
+  theme_minimal() +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(title="Happiness Score v. Productivity", 
+       x = "GDP PPP / Labor Force", y= "Happiness Score")
+```
+
+Rather than simply determining the relationship between happiness and productivity as logarithmic, further differentiating the relationship by region provides further insight into regional differences and how they impact this relationship. 
+
+To see how regions can vary greatly in aspects such as happiness and productivity, @fig-3 and @fig-4 show ...
+
+```{r}
+#| echo: false
+#| label: fig-3
+#| fig.cap: Mean happiness by region
+
+mean_happiness_by_region <- gdp_happiness |> 
+  group_by(region) |> 
+  summarise(mean_happiness = mean(happiness_score, na.rm = TRUE))
+
+mean_happiness_by_region |> 
+  ggplot(aes(x = region, y = mean_happiness, fill = region)) +
+  geom_col() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title="Happiness by Region", 
+       x="Region", y= "Average Happiness Score")
+```
+
+```{r}
+#| echo: false
+#| label: fig-4
+#| fig.cap: Mean productivity by region
+
+mean_productivity_by_region <- gdp_happiness |> 
+  group_by(region) |> 
+  summarise(mean_gdp_ppp_over_labor_force = mean(gdp_ppp_over_labor_force, na.rm = TRUE))
+
+mean_productivity_by_region |> 
+  ggplot(aes(x = region, y = mean_gdp_ppp_over_labor_force, fill = region)) +
+  geom_col() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title="Productivity by Region", 
+       x="Region", y= "Average GDP PPP / Labor Force")
+```
+
+```{r}
+#| echo: false
+#| label: fig-5
+#| fig.cap: Scatter plot of productivity v. happiness, faceted by region
+
+gdp_happiness |> 
+  ggplot(aes(x = gdp_ppp_over_labor_force, y = happiness_score)) +
+  geom_jitter() +
+  theme_minimal() +
+  facet_wrap(vars(region)) +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(title="Happiness Score v. Productivity", 
+       x="GDP PPP / Labor Force", y= "Happiness Score",
+       subtitle = "by Region")
+```
 
 ### Happiness v. Unemployment Rate 
 

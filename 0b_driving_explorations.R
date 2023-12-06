@@ -1,11 +1,14 @@
 library(tidyverse)
+gdp_happiness <- read_rds("data/gdp_happiness.rds")
+
 # The following figures were used in Progress Memo 2: 
 
 ## fig 1:
 corr <- gdp_happiness |> 
   select(pop:gdp_ppp_over_k_hours_worked_c, happiness_score) |> 
   cor(use = "complete.obs")
-ggcorrplot::ggcorrplot(corr)
+ggcorrplot::ggcorrplot(corr) +
+  ggtitle("Correlation Plot: GDP and Happiness")
 
 ## fig 2-4:
 gdp_happiness |> 

@@ -1,3 +1,6 @@
+library(tidyverse)
+gdp_happiness <- read_rds("data/gdp_happiness.rds")
+
 # unemployment_r v. gdp_ppp_over_labor_force
 gdp_happiness |> 
   ggplot(aes(x = gdp_ppp_over_labor_force, y = unemployment_r)) +
