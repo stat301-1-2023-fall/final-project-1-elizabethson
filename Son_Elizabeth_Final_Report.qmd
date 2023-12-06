@@ -1,5 +1,5 @@
 ---
-title: "Happiness: A Sacrifice for Productivity?"
+title: "Happiness- A Sacrifice for Productivity?"
 subtitle: |
   | Final Project 
   | Data Science 1 with R (STAT 301-1)
@@ -40,15 +40,16 @@ gdp_happiness <- read_rds("data/gdp_happiness.rds")
 ## Introduction
 As an economics major, the focus of many of my classes have been quantitative, such as GDP and unemployment. What hasn't been addressed enough, however, is whether maximized productivity in the form of economic growth or power can also impact citizens' well-being. The ideal nation shouldn't just be wealthy and powerful, but also have happy citizens who can then contribute to society in more positive ways.
 
-The research question that initially motivated this project was: Is there a correlation between happiness and productivity?
+The research question that initially motivated this project was:
+**Is there a correlation between happiness and productivity?**
 
-This report grew from this question, expanding to... TYPE HERE
+This report grew from this question, expanding to include unemployment rate as a variable of interest and time trends for the "most" productive and happy countries.
 
-The data sources that were used to carry out this exploration comes from ["GDP Over Hours Worked"](https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv), the dataset behind an article titled ["All work and no play"]([https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america) from The Economist. The datasets on happiness measures come from [“The World Happiness Report”](https://www.kaggle.com/datasets/unsdsn/world-happiness) for the years from 2015 to 2019. 
+One dataset that was used to carry out this exploration comes from ["GDP Over Hours Worked"](https://github.com/TheEconomist/the-economist-gdp-per-hour-estimates/blob/main/output-data/gdp_over_hours_worked.csv), the dataset behind an article titled ["All work and no play"]([https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america) from The Economist. The datasets on happiness measures come from [“The World Happiness Report”](https://www.kaggle.com/datasets/unsdsn/world-happiness) for the years from 2015 to 2019. 
 
-A key distinction is the definition of productivity. The definition mostly used throughout this report draws on the one provided by the Bureau of Labor Statistics: productivity is a measure of economic performance that compares the amount of goods and services produced (output) with the amount of inputs used to produce those goods and services. For this project, the input is labor force size and the output is GDP, scaled by purchasing power parity (PPP): GDP PPP / Labor Force (`gdp_ppp_over_labor_force`).
+A key distinction is the definition of productivity. The definition used throughout this report draws on the one provided by the Bureau of Labor Statistics: productivity is a measure of economic performance that compares the amount of goods and services produced (output) with the amount of inputs used to produce those goods and services. For this project, the input is labor force size and the output is GDP, scaled by purchasing power parity (PPP): GDP PPP / Labor Force (`gdp_ppp_over_labor_force`).
 
-My data exploration not only includes analyses by country, but also over time. Since the Happiness Report datasets only contain 5 years of data, the data over time combining all of the datasets will be restricted to the years 2015 to 2019. 
+The data exploration in this report not only includes analyses by region, but also over time. Since the Happiness Report datasets only contain 5 years of data, the data over time combining all of the datasets is restricted to the years 2015 to 2019. 
 
 ## Data Overview
 The data used in this exploration comes from 6 different datasets:
@@ -58,14 +59,14 @@ The data used in this exploration comes from 6 different datasets:
 The "GDP Over Hours Worked" dataset contains variables and variable transformations according to the original author's intent to measure productivity based on metrics such as PPP (Purchasing Power Parity) and hours worked. Each observation corresponds to a different year (from 1980 to 2022) and country.
 
 #### Features: 
-"GDP Over Hours Worked" is a 2.7 MB dataset with 11560 observations and 27 variables: 3 categorical and 24 numerical. Some of the numerical variables have missing values. 
+"GDP Over Hours Worked" is a 2.7 MB dataset with 11560 observations and 27 variables: 3 categorical and 24 numerical. Some of the numerical variables have missing values.
 
 ### Five Happiness Report Datasets
 #### Description: 
 Each "Happiness Report" dataset details happiness level by country calculated from Gallup World Poll data, which utilized surveys based on the Cantril ladder. The Cantril ladder asks respondents to rate their "own current lives" on a scale of 0 to 10 to determine an average "Happiness Score" by country. In addition to Happiness Score, there are six other relevant variables such as "healthy life expectancy".
 
 #### Features: 
-"Happiness Report" datasets contain information on the years 2015, 2016, 2017, 2018, and 2019. Each dataset contains 158, 157, 155, 156, and 156 observations as well as 12, 13, 12, 9, and 9 variables respectively. The datasets from 2015 and 2016 have two categorical variables, while the datasets from 2017, 2018, and 2019 have one categorical variable. The remaining variables are numerical. There are no missing values in any of the "Happiness Report" datasets. 
+"Happiness Report" datasets contain information on the years 2015, 2016, 2017, 2018, and 2019. Each dataset contains 158, 157, 155, 156, and 156 observations as well as 12, 13, 12, 9, and 9 variables, respectively. The datasets from 2015 and 2016 have two categorical variables, while the datasets from 2017, 2018, and 2019 have one categorical variable. The remaining variables are numerical. There are no missing values in any of the "Happiness Report" datasets. 
 
 ## Explorations
 A correlation plot on GDP variables such as "GDP over population" (`gdp_over_pop_c`) and "employment rate" (`employment_rate`) as well as "Happiness Score" (`happiness_score`) provides insight into which relationships have high correlations with happiness.
@@ -86,15 +87,15 @@ ggcorrplot::ggcorrplot(corr) +
   ggtitle("Correlation Plot: GDP Variables and Happiness Score")
 ```
 
-These two relationships are explored further in the following sections. 
+These bivariate relationships are explored further in the following two sections. 
 
 ### Happiness v. Productivity
-As expected from the correlation plot in @fig-1, there is a positive relationship between productivity and happiness. Nevertheless, the connection appears to exhibit a concave rather than a linear trend, indicating that as productivity rises, happiness increases, but not in direct proportion. For example, the same positive change in productivity yields a larger positive change in happiness for countries with lower productivity than those with high productivity. @fig-2 visualizes this concave relationship. 
+As expected from the correlation plot in @fig-1, there is a positive relationship between happiness and productivity. Nevertheless, the connection appears to exhibit a concave rather than a linear trend, indicating that as productivity rises, happiness increases, but not in direct proportion. For example, the same positive change in productivity yields a larger positive change in happiness for countries with lower productivity than those with high productivity. @fig-2 visualizes this concave relationship. 
 
 ```{r}
 #| echo: false
 #| label: fig-2
-#| fig.cap: Scatter plot of productivity v. happiness
+#| fig.cap: Scatter plot of happiness v. productivity
 
 gdp_happiness |> 
   ggplot(aes(x = gdp_ppp_over_labor_force, y = happiness_score)) +
@@ -105,11 +106,11 @@ gdp_happiness |>
        x = "GDP PPP / Labor Force", y= "Happiness Score")
 ```
 
-Rather than simply determining the relationship between happiness and productivity as logarithmic, further differentiating the relationship by region provides further insight into regional differences and how they impact this relationship. 
+Rather than simply determining the relationship between happiness and productivity as logarithmic, further differentiating the relationship by region provides further insight into regional differences and how they may impact this relationship. 
 
-To see how regions can vary greatly in aspects such as happiness and productivity, @fig-3 and @fig-4 visualize how much average happiness and average productivity differs by region.
+To see how regions can vary greatly in aspects such as happiness and productivity, @fig-3 and @fig-4 visualize how much average happiness and average productivity differ by region.
 
-In @fig-3, average happiness score shows the mean happiness scores of each country within a region. Countries in Australia and New Zealand, North America, and Western Europe have the highest average happiness scores while countries in Sub-Saharan Africa have the lowest.
+In @fig-3, average happiness score shows the mean happiness scores of each country within a region. Countries in Australia and New Zealand, North America, and Western Europe have the highest average happiness scores, while countries in Sub-Saharan Africa have the lowest.
 
 ```{r}
 #| echo: false
@@ -126,10 +127,11 @@ mean_happiness_by_region |>
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(title="Happiness by Region", 
-       x="Region", y= "Average Happiness Score")
+       x="Region", y= "Average Happiness Score",
+       fill = "Region")
 ```
 
-In @fig-4, average productivity shows the mean GDP PPP / Labor Force of each country within a region. The differences by region are much more pronounced for productivity compared to happiness: the regions with countries having the highest average productivity, North America and Western Europe, have a mean GDP PPP / Labor Force over 8 times greater than countries in Sub-Saharan Africa.
+In @fig-4, average productivity is shown by the mean GDP PPP / Labor Force of each country within a region. The differences by region are much more pronounced for productivity compared to happiness: the regions with countries having the highest average productivity, North America and Western Europe, have a mean GDP PPP / Labor Force over 8 times greater than countries in Sub-Saharan Africa.
 
 ```{r}
 #| echo: false
@@ -146,10 +148,11 @@ mean_productivity_by_region |>
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(title="Productivity by Region", 
-       x="Region", y= "Average GDP PPP / Labor Force")
+       x="Region", y= "Average GDP PPP / Labor Force",
+       fill = "Region")
 ```
 
-Based on the above plots, faceting by region is a reasonable approach and valid differentiation for visualizing the relationship between happiness and productivity. @fig-5 shows scatterplots faceted by region of the relationship between productivity and happiness. 
+Based on @fig-3 and @fig-4, faceting by region is a reasonable approach and valid differentiation for visualizing the relationship between happiness and productivity. @fig-5 now shows scatterplots faceted by region of the relationship between happiness and productivity. 
 
 ```{r}
 #| echo: false
@@ -164,17 +167,18 @@ gdp_happiness |>
   geom_smooth(method = lm, se = FALSE, color = "gray") +
   labs(title="Happiness Score v. Productivity", 
        x="GDP PPP / Labor Force", y= "Happiness Score",
-       subtitle = "by Region")
+       subtitle = "by Region",
+       color = "Region")
 ```
 
-Surprisingly, the positive relationship between happiness and productivity does not hold up across regions. @fig-5 reveals that there is a positive relationship between happiness and productivity in regions such as Southeastern Asia and Latin America and Caribbean. However, in North America, the relationship between happiness and productivity is negative. Further, the relationship is weak for Australia and New Zealand.
+Surprisingly, the positive relationship between happiness and productivity seen in @fig-2 does not hold up across regions. @fig-5 reveals that there is a positive relationship between happiness and productivity in regions including Southeastern Asia and Latin America and Caribbean. However, in North America, the relationship between happiness and productivity is inverse. Further, the relationship is weak for Australia and New Zealand.
 
-Further, some regions exhibit more concave relationships between happiness and productivity than others, such as Southeastern Asia and Western Europe.
+Some regions also exhibit more concave relationships between happiness and productivity than others, such as Southeastern Asia and Western Europe, as originally seen in @fig-2.
 
 ### Happiness v. Unemployment Rate 
-@fig-1 also showed a strong correlation between happiness and unemployment rate, one which was negative. 
+@fig-1 also showed a strong correlation between happiness and unemployment rate- one which was negative. 
 
-@fig-6 visualizes the negative relationship between unemployment rate and happiness. This relationship is not as strong as the one between productivity and happiness, but still exhibits that as unemployment rate increases, happiness tends to decrease.
+@fig-6 visualizes the negative relationship between unemployment rate and happiness. This relationship is not as strong as the one between happiness and productivity, but still visualizes that as unemployment rate increases, happiness tends to decrease.
 
 ```{r}
 #| echo: false
@@ -207,7 +211,8 @@ mean_unemployment_r_by_region |>
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(title="Unemployment Rate by Region", 
-       x="Region", y= "Average Unemployment Rate")
+       x="Region", y= "Average Unemployment Rate", 
+       fill = "Region")
 ```
 
 Thus, @fig-8 facets the relationship between happiness and unemployment rate by region. 
@@ -225,7 +230,8 @@ gdp_happiness |>
   geom_smooth(method = lm, se = FALSE, color = "gray") +
   labs(title="Happiness Score v. Unemployment Rate", 
        x="Unemployment Rate", y= "Happiness Score",
-       subtitle = "by Region")
+       subtitle = "by Region",
+       color = "Region")
 ```
 
 Surprisingly, the negative correlation between happiness and unemployment rate across all regions did not hold up after faceting by region. For example, for countries in the region Sub-Saharan Africa, the relationship between happiness and unemployment rate was actually positive: as unemployment increases, happiness also increases. In contrast, countries in regions such as Southern Asia and the Middle East and Northern Africa show a strong, negative relationship between happiness and unemployment rate. For countries in regions such as Latin America and Caribbean, the relationship between happiness and unemployment rate is very weak. 
@@ -233,9 +239,9 @@ Surprisingly, the negative correlation between happiness and unemployment rate a
 The scatterplots faceted by region provide greater insight into how region can impact the relationship between happiness and unemployment rate in significant ways.
 
 ### Multivariate Analysis: Happiness, Productivity, and Unemployment Rate 
-Past analyses emphasize that regional differences can drive different relationships between variables of interest, such as productivity and unemployment rate, and happiness. @fig-5 visualized how the relationship between happiness and productivity was stronger for some regions than others, despite being positive for nearly every region. @fig-8 visualized how the relationship between happiness and unemployment rate was negative for some regions, and positive for others. 
+Past analyses emphasize how regional differences can drive different relationships between variables of interest, such as productivity and unemployment rate, and happiness. @fig-5 visualized how the relationship between happiness and productivity was stronger for some regions than others, despite being positive for nearly every region. @fig-8 visualized how the relationship between happiness and unemployment rate was negative for some regions, and positive for others. 
 
-@fig-9 provides a multivariate analysis between happiness, productivity, and unemployment rate, faceted by region. 
+@fig-9 provides a multivariate visualization between happiness, productivity, and unemployment rate, faceted by region. 
 
 ```{r}
 #| echo: false
@@ -258,38 +264,55 @@ As expected, the relationship between unemployment rate and productivity varies 
 
 However, there are some notable trends in the interaction between unemployment rate, productivity, and happiness by region. Further analysis is done on two regions: Eastern Asia and Western Europe. 
 
-> Eastern Asia: The tradeoff between productivity and unemployment rate is significant. As unemployment rises even marginally, there is a strong negative relationship between productivity and unemployment rate that leads to a significant drop in productivity. Happiness, however, does not experience a similarly dramatic drop. Countries in Eastern Asia have a smaller range in happiness that is skewed toward lower levels of happiness. Thus, the drop in happiness is insignificant in the context of a happiness scale from 0 to 10. 
+> Eastern Asia: The tradeoff between productivity and unemployment rate is significant. As unemployment rises even marginally, the strong negative relationship between productivity and unemployment rate leads to a significant drop in productivity. Happiness, however, does not experience a similarly dramatic drop. Countries in Eastern Asia have a smaller range in happiness that is skewed toward lower levels of happiness. Thus, the drop in happiness as unemployment rate increases is insignificant in the context of a happiness scale from 0 to 10. 
 
-> Western Europe: Countries in Western Europe also experience a negative relationship between productivity and unempoyment rate. However, this negative relationship is not as strong- as unemployment rate increases, productivity decreases marginally. Countries in Western Europe also have a wide range of happiness, with the happiest countries having the lowest unemployment rates with varying levels of productivity. 
+> Western Europe: Countries in Western Europe also experience a negative relationship between productivity and unemployment rate. However, this negative relationship is not as strong- as unemployment rate increases, productivity decreases marginally. Countries in Western Europe also have a wide range of happiness, with the happiest countries having lower unemployment rates with varying levels of productivity. 
 
-While the multivariate analysis does not completely visualize the three-variable relationship while factoring for region, it does complement past analyses by showing that a significant relationship does exist in some regions. 
+While the multivariate analysis does not completely visualize the three-variable relationship while factoring by region, it does complement past analyses by showing that a significant multivariate relationship does exist in some regions. 
 
-### Time Trends
-To further analyze the relationship between productivity and happiness, and how they interact over time, @fig-10 reveals the top 10 countries in terms of happiness score and productivity. 
+The table in @fig-10 quantifies mean productivity, happiness, and unemployment rate grouped by region to summarize @fig-3, @fig-4, and @fig-7. As expected, there is high variation in these three variables by region, which drove analyses faceted by region such as the one for @fig-9. 
 
 ```{r}
 #| echo: false
 #| label: fig-10
+#| fig.cap: Table of mean productivity, happiness, and unemployment rate grouped by region
+
+table_by_region <- gdp_happiness |>
+  group_by(region) |>
+  summarise(
+    mean_gdp_ppp_over_labor_force = mean(gdp_ppp_over_labor_force, na.rm = TRUE),
+    mean_happiness = mean(happiness_score, na.rm = TRUE),
+    mean_unemployment_r = mean(unemployment_r, na.rm = TRUE)
+  )
+
+table_by_region  |> 
+  DT::datatable()
+```
+
+### Time Trends
+To further analyze the relationship between happiness and productivity and how they interact over time, @fig-11 shows the top 5 countries in terms of happiness score and productivity. 
+
+```{r}
+#| echo: false
+#| label: fig-11
 #| fig.cap: Table of the happiest and most productive countries in 2019
 
 happy_and_productive_countries <- gdp_happiness |> 
   filter(year == 2019) |> 
   filter(happiness_rank < 40) |> 
-  slice_max(gdp_ppp_over_labor_force, n = 5) |> 
-  mutate(rank = row_number()) |>
-  select(rank, everything())
+  slice_max(gdp_ppp_over_labor_force, n = 5)
 
-happy_and_productive_countries|> 
-  knitr::kable()
+happy_and_productive_countries |> 
+  DT::datatable()
 ```
 
-There are many ways to determine the "most" happy and productive country. The approach I used here was to filter the dataset by the top 40 happiest countries in 2019. @fig-10 then ranks these countries by productivity. According to the table, Luxembourg is the happiest and most productive country, followed by Ireland and Singapore.
+There are many ways to determine the "most" happy and productive country. The approach used here was to filter the dataset by the top 40 happiest countries in 2019. @fig-11 then ranks these countries by productivity. According to the table, Luxembourg is the happiest and most productive country, followed by Ireland and Singapore.
 
-@fig-11, @fig-12, and @fig-13 reveal that the top 3 countries all experienced rising productivity over time from 2015 to 2019. Further, they reveal that at lower levels of productivity, the top 3 countries had higher happiness scores. 
+@fig-12, @fig-13, and @fig-14 reveal that the top 3 countries all experienced rising productivity over time from 2015 to 2019. Further, they show that at lower levels of productivity, the top 3 countries had higher happiness scores. 
 
 ```{r}
 #| echo: false
-#| label: fig-11
+#| label: fig-12
 #| fig.cap: Productivity v. happiness by time in Luxembourg
 
 gdp_happiness |> 
@@ -306,7 +329,7 @@ gdp_happiness |>
 
 ```{r}
 #| echo: false
-#| label: fig-12
+#| label: fig-13
 #| fig.cap: Productivity v. happiness by time in Ireland
 
 gdp_happiness |> 
@@ -323,7 +346,7 @@ gdp_happiness |>
 
 ```{r}
 #| echo: false
-#| label: fig-13
+#| label: fig-14
 #| fig.cap: Productivity v. happiness by time in Singapore
 
 gdp_happiness |> 
@@ -337,7 +360,20 @@ gdp_happiness |>
        color = "Happiness Score",
        subtitle = "including happiness score")
 ```
+
+These figures show that for countries with relatively high happiness, increasing productivity does not necessarily lead to a rise in happiness as predicted by @fig-2. 
+
 ## Conclusion
+
+Data analyses on GDP and happiness by country revealed that the relationship between happiness and productivity is positive for every region except for North America. This means that as productivity, measured by GDP PPP / Labor Force, increased, happiness also increased for most countries. 
+
+On the other hand, the relationship between happiness and unemployment rate varied significantly by region. Some regions showed a positive relationship where as unemployment rate increased, happiness score also increased. Others showed that the inverse is true.
+
+These findings reveal that a simple, global analysis on the relationship between productivity, unemployment rate, and happiness is insufficient. By further differentiating these relationships by region, one can gain better insight into how happiness is influenced by quantitative economic factors. 
+
+Analyzing the top 3 countries in terms of happiness and productivity reveals that for the happiest countries, increases in productivity over time do not yield increases in happiness. Thus, we can conclude that the relationship between happiness and productivity is not only dependent on region, but also level of productivity.
+
+Future research in this field can look at relationships that are not purely linear, such as quadratic and cubic. They can also look at variable interaction terms to better predict happiness based on economic measures. However, this report addressed the importance of factoring by region and the general relationship between happiness and productivity, especially for countries that already have high happiness and productivity values.
 
 ## References
 The Economist (2023). All work and no play, [https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america](https://www.economist.com/graphic-detail/2023/10/04/productivity-has-grown-faster-in-western-europe-than-in-america)
@@ -354,31 +390,31 @@ U.S. Bureau of Labor Statistics. Productivity 101, [https://www.bls.gov/k12/prod
 Before the explorations on the datasets began, the six different datasets had to be merged into one. To do this, a variable called `year` was added to each "Happiness Report" dataset. Then, `country` and `year` were used as primary keys to merge the datasets into one, called `gdp_happiness`.
 
 ### Data Cleaning: Country Names
-Some countries changed names over time, leading to different names in the `country` variable for the same country in between the six datasets. Thus, some `country` names were manually updated to their more modern name. In addition, `Namibia` was excluded from the final, combined dataset because the "GDP Over Hours Worked" dataset had multiple different observations of each `country` and `year` variable for Namibia. 
+Some countries changed names over time, leading to different names in the `country` variable for the same country amongst the six datasets. Thus, some `country` names were manually updated to their more modern name. In addition, `Namibia` was excluded from the final, combined dataset because the "GDP Over Hours Worked" dataset had multiple different observations of each `country` and `year` variable for Namibia. 
 
 ### Missing Data: Measuring Productivity
 Aside from the formal definition of productivity, the decision to measure productivity by GDP PPP divided by labor force instead of GDP PPP divided by hours worked was driven by missingness in the "GDP Over Hours Worked" dataset.
 
-First, I wanted to see which variables had a high number of missing observations, `NA`. 
+@fig-15 shows which variables had a high number of missing observations, `NA`. 
 
 ```{r}
 #| echo: false
-#| label: fig-a
-#| fig.cap: Type here
+#| label: fig-15
+#| fig.cap: Table of top 15 variables with most missing observations
 
 gdp_happiness |> 
   summarise(across(everything(), ~ sum(is.na(.)))) |> 
   pivot_longer(everything(), names_to = "variable", values_to = "na_count") |> 
   slice_max(na_count, n = 15) |> 
-  knitr::kable()
+  DT::datatable()
 ```
 
-Many of the variables with a high count of NA observations involved hours worked. So, I examined these variables further. 
+Many of the variables with a high count of NA observations involved hours worked. So, these variables were examined further in @fig-16. `TRUE` means that there were missing observations within a variable while `FALSE` means that there were no missing observations within a variable. 
 
 ```{r}
 #| echo: false
-#| label: fig-b
-#| fig.cap: Type here
+#| label: fig-16
+#| fig.cap: Table of variables related to hours worked
 
 gdp_happiness |> 
   mutate(missing_hours_worked = is.na(hours_worked),
@@ -387,7 +423,7 @@ gdp_happiness |>
          missing_gdp_ppp_over_k_hours_worked = is.na(gdp_ppp_over_k_hours_worked),
          missing_gdp_ppp_over_k_hours_worked_c = is.na(gdp_ppp_over_k_hours_worked_c)) |> 
   count(missing_hours_worked, missing_total_hours, missing_hours_per_employed, missing_gdp_ppp_over_k_hours_worked, missing_gdp_ppp_over_k_hours_worked_c) |> 
-  knitr::kable()
+  DT::datatable()
 ```
 
-I expected a return of every iteration of TRUE/FALSE. However, the majority of combinations were TRUE for variables regarding hours. Thus, missingness many observations was largely in part due to an hour variable used to calculate other, relevant variables being missing. 
+If there was no relationship between missingness in the variables extracted for @fig-16, the table would show every possible iteration of TRUE/FALSE by variable. However, the majority of combinations were `TRUE` for variables regarding hours worked. According to @fig-16, 561 observations had all of the variables involving hours worked missing. Thus, missingness in many observations was largely in part due to an hour variable used to calculate other, relevant variables being missing. Thus, GDP PPP divided by labor force was used as the measure for productivity in this report rather than GDP PPP divided by hours worked.

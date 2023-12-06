@@ -1,3 +1,6 @@
+library(tidyverse) 
+gdp_happiness <- read_rds("data/gdp_happiness.rds")
+
 # Happiest and Most Productive Country: 
 
 happy_and_productive_countries <- gdp_happiness |> 
