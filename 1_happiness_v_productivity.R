@@ -38,13 +38,11 @@ mean_productivity_by_region |>
 
 # happiness_score v. gdp_ppp_over_labor_force by region
 gdp_happiness |> 
-  ggplot(aes(x = gdp_ppp_over_labor_force, y = happiness_score)) +
+  ggplot(aes(x = gdp_ppp_over_labor_force, y = happiness_score, color = region)) +
   geom_jitter() +
   theme_minimal() +
   facet_wrap(vars(region)) +
-  geom_smooth(method = lm, se = FALSE) +
+  geom_smooth(method = lm, se = FALSE, color = "gray") +
   labs(title="Happiness Score v. Productivity", 
        x="GDP PPP / Labor Force", y= "Happiness Score",
        subtitle = "by Region")
-
-

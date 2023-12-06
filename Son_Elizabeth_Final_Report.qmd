@@ -107,7 +107,9 @@ gdp_happiness |>
 
 Rather than simply determining the relationship between happiness and productivity as logarithmic, further differentiating the relationship by region provides further insight into regional differences and how they impact this relationship. 
 
-To see how regions can vary greatly in aspects such as happiness and productivity, @fig-3 and @fig-4 show ...
+To see how regions can vary greatly in aspects such as happiness and productivity, @fig-3 and @fig-4 visualize how much average happiness and average productivity differs by region.
+
+In @fig-3, average happiness score shows the mean happiness scores of each country within a region. Countries in Australia and New Zealand, North America, and Western Europe have the highest average happiness scores while countries in Sub-Saharan Africa have the lowest.
 
 ```{r}
 #| echo: false
@@ -127,6 +129,8 @@ mean_happiness_by_region |>
        x="Region", y= "Average Happiness Score")
 ```
 
+In @fig-4, average productivity shows the mean GDP PPP / Labor Force of each country within a region. The differences by region are much more pronounced for productivity compared to happiness: the regions with countries having the highest average productivity, North America and Western Europe, have a mean GDP PPP / Labor Force over 8 times greater than countries in Sub-Saharan Africa.
+
 ```{r}
 #| echo: false
 #| label: fig-4
@@ -145,23 +149,88 @@ mean_productivity_by_region |>
        x="Region", y= "Average GDP PPP / Labor Force")
 ```
 
+Based on the above plots, faceting by region is a reasonable approach and valid differentiation for visualizing the relationship between happiness and productivity. @fig-5 shows scatterplots faceted by region of the relationship between productivity and happiness. 
+
 ```{r}
 #| echo: false
 #| label: fig-5
-#| fig.cap: Scatter plot of productivity v. happiness, faceted by region
+#| fig.cap: Scatter plot of happiness v. productivity, faceted by region
 
 gdp_happiness |> 
-  ggplot(aes(x = gdp_ppp_over_labor_force, y = happiness_score)) +
+  ggplot(aes(x = gdp_ppp_over_labor_force, y = happiness_score, color = region)) +
   geom_jitter() +
   theme_minimal() +
   facet_wrap(vars(region)) +
-  geom_smooth(method = lm, se = FALSE) +
+  geom_smooth(method = lm, se = FALSE, color = "gray") +
   labs(title="Happiness Score v. Productivity", 
        x="GDP PPP / Labor Force", y= "Happiness Score",
        subtitle = "by Region")
 ```
 
+Surprisingly, the positive relationship between happiness and productivity does not hold up across regions. @fig-5 reveals that there is a positive relationship between happiness and productivity in regions such as Southeastern Asia and Latin America and Caribbean. However, in North America, the relationship between happiness and productivity is negative. Further, the relationship is weak for Australia and New Zealand.
+
+Further, some regions exhibit more concave relationships between happiness and productivity than others, such as Southeastern Asia and Western Europe.
+
 ### Happiness v. Unemployment Rate 
+@fig-1 also showed a strong correlation between happiness and unemployment rate, one which was negative. 
+
+@fig-6 visualizes the negative relationship between unemployment rate and happiness. This relationship is not as strong as the one between productivity and happiness, but still exhibits that as unemployment rate increases, happiness tends to decrease.
+
+```{r}
+#| echo: false
+#| label: fig-6
+#| fig.cap: Scatter plot of unemployment rate v. happiness
+
+gdp_happiness |> 
+  ggplot(aes(x = unemployment_r, y = happiness_score)) +
+  geom_jitter() +
+  theme_minimal() +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(title="Happiness Score v. Unemployment Rate", 
+       x = "Unemployment Rate", y= "Happiness Score")
+```
+
+Again, regional differences in mean unemployment rate may be driving a relationship that is stronger for some regions than others. @fig-7 shows that the average unemployment rates for countries in regions such as Southeastern Asia and Eastern Asia are much lower than the average unemployment rates in the Middle East and Northern Africa. 
+
+```{r}
+#| echo: false
+#| label: fig-7
+#| fig.cap: Mean unemployment rate by region
+
+mean_unemployment_r_by_region <- gdp_happiness |> 
+  group_by(region) |> 
+  summarise(mean_unemployment_r = mean(unemployment_r, na.rm = TRUE))
+
+mean_unemployment_r_by_region |> 
+  ggplot(aes(x = region, y = mean_unemployment_r, fill = region)) +
+  geom_col() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title="Unemployment Rate by Region", 
+       x="Region", y= "Average Unemployment Rate")
+```
+
+Thus, @fig-8 facets the relationship between happiness and unemployment rate by region. 
+
+```{r}
+#| echo: false
+#| label: fig-8
+#| fig.cap: Scatter plot of happiness v. unemployment rate, faceted by region
+
+gdp_happiness |> 
+  ggplot(aes(x = unemployment_r, y = happiness_score, color = region)) +
+  geom_jitter() +
+  theme_minimal() +
+  facet_wrap(vars(region)) +
+  geom_smooth(method = lm, se = FALSE, color = "gray") +
+  labs(title="Happiness Score v. Unemployment Rate", 
+       x="Unemployment Rate", y= "Happiness Score",
+       subtitle = "by Region")
+```
+
+Surprisingly, the negative correlation between happiness and unemployment rate across all regions did not hold up after faceting by region. For example, for countries in the region Sub-Saharan Africa, the relationship between happiness and unemployment rate was actually positive: as unemployment increases, happiness also increases. In contrast, countries in regions such as Southern Asia and the Middle East and Northern Africa show a strong, negative relationship between happiness and unemployment rate. For countries in regions such as Latin America and Caribbean, the relationship between happiness and unemployment rate is very weak. 
+
+The scatterplots faceted by region provide greater insight into 
 
 ### Multivariate Analysis: Happiness, Productivity, and Unemployment Rate 
 
